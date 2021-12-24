@@ -51,6 +51,9 @@ public class BookItem implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "file_id", referencedColumnName = "id"))
     private Set<FileDb> fileDbs = new HashSet<>();
 
+    public BookItem() {
+    }
+    
     public BookItem (String  barCode, String discount, float price, Book book, Set<FileDb> fileDbs){
         this.barCode = barCode;
         this.discount = discount;

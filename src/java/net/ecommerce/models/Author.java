@@ -46,5 +46,16 @@ public class Author {
     public void setBiography(String biography) {
         this.biography = biography;
     }
+
+    public Author() {
+    }
+
+    
+    
+    public Author(int id, String name, String biography) {
+        this.id = id;
+        this.name = name;
+        this.biography = biography;
+    }
     
 }

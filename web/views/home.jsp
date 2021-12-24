@@ -318,11 +318,13 @@
 <%@ include file="components/footer.jsp" %> 
 <script type="text/javascript">
     $(document).ready( function() {
-        let username = localStorage.getItem("username");
+        let username = sessionStorage.getItem("username");
         if(username){
             $('#btnRegister').hide();
             $('#btnLogin').hide();
-            $('#usernameText').html(username);
+            $('#character').hide();
+            let rawAccount = `<i class='fa fa-user ms-2'></i>` + username;
+            $('#usernameText').html(rawAccount);
         }
     })
 </script>

@@ -48,33 +48,33 @@
         <nav class="nav">
             <ul class="nav-bar">
                 <li class="nav-link ">
-                    <a href="/orderpurephp/admin/admin.php">
+                    <a href="/eCommerce/admin/dashboard">
                         <span class="nav-icons"><i class="fas fa-home"></i></span>
                         <span class="nav-title">Trang chủ</span>
                     </a>
                 </li>
                 <li class="nav-link ">
-                    <a href="/orderpurephp/admin/order.php">
+                    <a href="/eCommerce/admin/category">
                         <span class="nav-icons"><i class="fas fa-sort-amount-down-alt"></i></span>
-                        <span class="nav-title">Đơn hàng</span>
-                    </a>
-                </li>
-                <li class="nav-link ">
-                    <a href="/orderpurephp/admin/category.php">
-                        <span class="nav-icons"><i class="fas fa-list-ul"></i></span>
                         <span class="nav-title">Danh mục</span>
                     </a>
                 </li>
                 <li class="nav-link ">
-                    <a href="/orderpurephp/admin/product.php">
+                    <a href="/eCommerce/admin/book">
+                        <span class="nav-icons"><i class="fas fa-list-ul"></i></span>
+                        <span class="nav-title">Quản lý sách</span>
+                    </a>
+                </li>
+                <li class="nav-link ">
+                    <a href="/eCommerce/admin/publisher">
                         <span class="nav-icons"><i class="fas fa-archway"></i></span>
-                        <span class="nav-title">Sản phầm</span>
+                        <span class="nav-title">Quản lý NXB</span>
                     </a>
                 </li>
                 <li class="nav-link">
-                    <a href="/orderpurephp/admin/user.php">
+                    <a href="/eCommerce/admin/author">
                         <span class="nav-icons"><i class="fas fa-users"></i></span>
-                        <span class="nav-title">Người dùng</span>
+                        <span class="nav-title">Quản lý tác giả</span>
                     </a>
                 </li>
             </ul>

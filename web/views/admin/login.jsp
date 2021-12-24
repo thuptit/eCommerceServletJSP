@@ -105,6 +105,8 @@
             type: 'POST',
             success: (res) =>{
                 if(res.success){
+                    sessionStorage.setItem('usernameAdmin', res.data[0].username);
+                    sessionStorage.setItem('idAdmin', res.data[0].id);
                     window.location = "http://localhost:8080/eCommerce/admin/dashboard";
                 }
                 else{

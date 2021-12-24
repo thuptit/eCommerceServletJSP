@@ -106,8 +106,8 @@
             type: 'POST',
             success: (res) =>{
                 if(res.success){
-                    localStorage.setItem('username', res.data[0].username);
-                    localStorage.setItem('id', res.data[0].id);
+                    sessionStorage.setItem('username', res.data[0].username);
+                    sessionStorage.setItem('id', res.data[0].id);
                     window.location = "http://localhost:8080/eCommerce/";
                 }
                 else{
