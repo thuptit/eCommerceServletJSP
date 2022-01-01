@@ -262,8 +262,10 @@ public class BookDao {
             book.setPublisher(publisher);
             session.save(book);
             bookItem.setBook(book);
+            FileDb fileDb = new FileDb(url, "cloudinary");
+            session.save(fileDb);
             Set<FileDb> fileDbs = new HashSet<>();
-            fileDbs.add(new FileDb(url, "cloudinary"));
+            fileDbs.add(fileDb);
             bookItem.setFileDbs(fileDbs);
             session.save(bookItem);
             // commit transaction
