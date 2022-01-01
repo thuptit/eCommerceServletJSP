@@ -66,5 +66,15 @@ public class FileDb implements Serializable {
     public void setExtension(String extension) {
         this.extension = extension;
     }
+
+    public FileDb() {
+    }
+
+    public FileDb(Integer id, String path, Date createdDate, String extension) {
+        this.id = id;
+        this.path = path;
+        this.createdDate = createdDate;
+        this.extension = extension;
+    }
     
 }

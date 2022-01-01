@@ -6,47 +6,49 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="components/head.jsp" %> 
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Quản lý Nhà Xuất Bản</h3>
+<main>
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Quản lý Nhà Xuất Bản</h3>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <input id="searchName" type="text" class="form-control" placeholder="Nhập tên NXB..." name="searchName">
+        <div class="row">
+            <div class="col-md-3">
+                <input id="searchName" type="text" class="form-control" placeholder="Nhập tên NXB..." name="searchName">
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary" type="button" onclick="getListPublisher()"><i class="fa fa-search"></i> Tìm kiếm</button>
+                <button class="btn btn-success" onclick="showModalCreate()"><i class="fa fa-plus"></i> Thêm mới</button>
+            </div>
         </div>
-        <div class="col-md-3">
-            <button class="btn btn-primary" type="button" onclick="getListPublisher()"><i class="fa fa-search"></i> Tìm kiếm</button>
-            <button class="btn btn-success" onclick="showModalCreate()"><i class="fa fa-plus"></i> Thêm mới</button>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-md-12">
-            <table class="table table-success table-striped table-hover table-bordered" id="tblExportUser">
-                <thead>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên NXB</th>
-                        <th>Địa chỉ</th>
-                        <th>Chức năng</th>
-                    </tr>
-                </thead>
-                <tbody id="tblPublisher">
-                </tbody>
-            </table>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <table class="table table-success table-striped table-hover table-bordered" id="tblExportUser">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên NXB</th>
+                            <th>Địa chỉ</th>
+                            <th>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tblPublisher">
+                    </tbody>
+                </table>
 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div id="totalRecords" style="float: left;"></div>
+            </div>
+            <div class="col-md-6">
+                <div id="pagination_link" style="float: right;"></div>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div id="totalRecords" style="float: left;"></div>
-        </div>
-        <div class="col-md-6">
-            <div id="pagination_link" style="float: right;"></div>
-        </div>
-    </div>
-</div>
+</main>
 <!-- Modal -->
 <div class="modal fade" id="modalPublisher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

@@ -57,5 +57,9 @@ public class Author {
         this.name = name;
         this.biography = biography;
     }
+
+    public Author(int id) {
+        this.id = id;
+    }
     
 }

@@ -34,8 +34,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.ecommerce.models.Book;
+import net.ecommerce.models.BookItem;
+import net.ecommerce.models.FileDb;
 import net.ecommerce.models.Publisher;
 
 /**
@@ -89,6 +93,14 @@ public class BaseController extends HttpServlet {
                     }
                 }
                 break;
+                case "/admin/getDropdownAuthor": {
+                    try {
+                        getDropdownAuthor(request, response);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
                 case "/admin/getByIdAuthor": {
                     try {
                         getByIdAuthor(request, response);
@@ -109,6 +121,9 @@ public class BaseController extends HttpServlet {
                 case "/admin/book":
                     bookdAdmin(request, response);
                     break;
+                case "/admin/add-or-edit-book":
+                    addEditViewBookAdmin(request, response);
+                    break;
                 //end route book
 
                 //start route publisher   
@@ -118,6 +133,14 @@ public class BaseController extends HttpServlet {
                 case "/admin/getListPublisher": {
                     try {
                         getListPublisher(request, response);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+                case "/admin/getDropdownPublisher": {
+                    try {
+                        getDropdownPublisher(request, response);
                     } catch (JSONException ex) {
                         Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -168,6 +191,14 @@ public class BaseController extends HttpServlet {
                 case "/admin/saveAuthor": {
                     try {
                         saveAuthor(request, response);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+                case "/admin/saveBook": {
+                    try {
+                        saveBook(request, response);
                     } catch (JSONException ex) {
                         Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -237,7 +268,6 @@ public class BaseController extends HttpServlet {
 
     //start handle customer page
     //end handle customer page
-    
     // start views admin page
     private void loginAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("views/admin/login.jsp").forward(request, response);
@@ -261,6 +291,10 @@ public class BaseController extends HttpServlet {
 
     private void authorAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("/views/admin/author.jsp").forward(request, response);
+    }
+
+    private void addEditViewBookAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("/views/admin/addOrEditBook.jsp").forward(request, response);
     }
     //end views admin page
 
@@ -325,7 +359,7 @@ public class BaseController extends HttpServlet {
         ResponseDto res = new ResponseDto(true, "Success", null);
         responseClient(res, response);
     }
-    
+
     private void getListPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
         String name = request.getParameter("name");
         List listAuhor = bookDao.getListPublisher(name);
@@ -360,6 +394,41 @@ public class BaseController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         boolean isCheckDelete = bookDao.deletePublisher(new Publisher(id, name, address));
         ResponseDto res = new ResponseDto(true, "Success", null);
+        responseClient(res, response);
+    }
+
+    private void getDropdownPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
+        List publishers = bookDao.getDropdownPublisher();
+        ResponseDto res = new ResponseDto(true, "Thành công", publishers);
+        responseClient(res, response);
+    }
+
+    private void getDropdownAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
+        List authors = bookDao.getDropdownAuthor();
+        ResponseDto res = new ResponseDto(true, "Thành công", authors);
+        responseClient(res, response);
+    }
+
+    private void saveBook(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
+        String isbn = request.getParameter("isbn");
+        String language = request.getParameter("language");
+        String numberOfPage = request.getParameter("numberOfPage");
+        String summary = request.getParameter("summary");
+        String title = request.getParameter("name");
+        int authorId = Integer.parseInt(request.getParameter("author"));
+        int publisherId = Integer.parseInt(request.getParameter("publisher"));
+        String barcode = request.getParameter("barcode");
+        String discount = request.getParameter("discount");
+        int price = Integer.parseInt(request.getParameter("price"));
+        String url = request.getParameter("url");
+        int id = Integer.parseInt(request.getParameter("id"));
+        boolean isSuccess = false;
+        if (id < 1) {
+            isSuccess = bookDao.insertBook(new Book(id, isbn, title, summary, id, language, new Author(authorId), new Publisher(publisherId)), new BookItem(barcode, discount, price, new Book(), new HashSet<>()), url);
+        } else {
+            isSuccess = bookDao.updateBook(new Book(id, isbn, title, summary, id, language, new Author(authorId), new Publisher(authorId)), new BookItem(barcode, discount, id, new Book(), new HashSet<>()));
+        }
+        ResponseDto res = isSuccess ? new ResponseDto(true, "Thành công", null) : new ResponseDto(true, "Có lỗi xảy ra", null);
         responseClient(res, response);
     }
     //end handle admin page

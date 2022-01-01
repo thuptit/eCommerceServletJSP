@@ -6,8 +6,13 @@
 package net.ecommerce.daos;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import net.ecommerce.models.Author;
+import net.ecommerce.models.Book;
+import net.ecommerce.models.BookItem;
+import net.ecommerce.models.FileDb;
 import net.ecommerce.models.Publisher;
 import net.ecommerce.utils.HibernateUtils;
 import org.hibernate.Session;
@@ -201,5 +206,100 @@ public class BookDao {
             e.printStackTrace();
         }
         return isCheck;
+    }
+    
+    public List getDropdownPublisher(){
+        Transaction transaction = null;
+        List listPublisher = null;
+        try{
+            Session session = HibernateUtils.getSessionFactory().openSession();
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an user object
+            listPublisher = session.createQuery("from Publisher").list();
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return listPublisher;
+    }
+    
+    public List getDropdownAuthor(){
+        Transaction transaction = null;
+        List listAuthor = null;
+        try{
+            Session session = HibernateUtils.getSessionFactory().openSession();
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an user object
+            listAuthor = session.createQuery("from Author").list();
+            // commit transaction
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return listAuthor;
+    }
+    
+    public boolean insertBook(Book book, BookItem bookItem, String url){
+        Transaction transaction = null;
+        boolean isSuccess = false;
+        try{
+            Session session = HibernateUtils.getSessionFactory().openSession();
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an user object
+            Author author = (Author) session.get(Author.class, book.getAuthor().getId());
+            book.setAuthor(author);
+            Publisher publisher = (Publisher) session.get(Publisher.class, book.getPublisher().getId());
+            book.setPublisher(publisher);
+            session.save(book);
+            bookItem.setBook(book);
+            Set<FileDb> fileDbs = new HashSet<>();
+            fileDbs.add(new FileDb(url, "cloudinary"));
+            bookItem.setFileDbs(fileDbs);
+            session.save(bookItem);
+            // commit transaction
+            transaction.commit();
+            isSuccess = true;
+        }
+        catch(Exception e){
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return isSuccess;
+    }
+    
+    public boolean updateBook(Book book, BookItem bookItem){
+        Transaction transaction = null;
+        boolean isSuccess = false;
+        try{
+            Session session = HibernateUtils.getSessionFactory().openSession();
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an user object
+            session.update(book);
+            bookItem.setBook(book);
+            session.update(bookItem);
+            // commit transaction
+            transaction.commit();
+            isSuccess = true;
+        }
+        catch(Exception e){
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return isSuccess;
     }
 }

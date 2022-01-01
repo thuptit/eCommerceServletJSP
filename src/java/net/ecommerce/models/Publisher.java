@@ -57,7 +57,9 @@ public class Publisher implements Serializable {
         this.name = name;
         this.address = address;
     }
-    
-    
 
+    public Publisher(int id) {
+        this.id = id;
+    }
+    
 }
