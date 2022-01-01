@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/java/eCommerce/web/views/admin/author.jsp</file>
             <file>file:/D:/java/eCommerce/src/java/net/ecommerce/controllers/BaseController.java</file>
-            <file>file:/D:/java/eCommerce/src/java/net/ecommerce/models/Book.java</file>
-            <file>file:/D:/java/eCommerce/src/java/net/ecommerce/models/Publisher.java</file>
-            <file>file:/D:/java/eCommerce/src/java/net/ecommerce/models/BookItem.java</file>
-            <file>file:/D:/java/eCommerce/web/views/admin/publisher.jsp</file>
+            <file>file:/D:/java/eCommerce/web/views/admin/addOrEditBook.jsp</file>
             <file>file:/D:/java/eCommerce/src/java/net/ecommerce/daos/BookDao.java</file>
         </group>
     </open-files>

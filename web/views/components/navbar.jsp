@@ -24,7 +24,9 @@
 
     <div class="icons d-flex align-items-center">
         <div class="fas fa-search" id="search-btn"></div>
-        <div class="fas fa-shopping-cart" id="cart-btn"></div>
+        <div class="fas fa-shopping-cart" id="cart-btn" style="position: relative">
+            <span id="countItems"></span>
+        </div>
         <a class="ms-4 me-2 link-account" id="btnRegister" style="font-size: 2rem; color: #fff" href="">Đăng ký</a>
         <span style="font-size: 2rem; color: #fff" id="character">/</span>
         <a class=" ms-2 link-account" id="btnLogin" style="font-size: 2rem; color: #fff" href="/eCommerce/login">Đăng nhập</a>

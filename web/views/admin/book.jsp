@@ -58,11 +58,24 @@
 <%@ include file="components/foot.jsp" %> 
 <script type="text/javascript">
     $(document).ready(() => {
-
+        getListBook();
     });
 
     const getListBook = () => {
-        console.log("oke danh sách");
+        $.ajax({
+            url: '/eCommerce/admin/getListBook',
+            type: 'GET',
+            success: (res) => {
+                if(res.data.length > 0){
+                    let count = 0;
+                    res.data.forEach((element) => {
+                        count++;
+                        let rawHtml = "<tr><td>"+count+"</td><td>"+element.bar_code+"</td><td>"+element.title+"</td><td>"+covertMoney(element.price)+"</td><td><img width='100' height='100' src='"+element.path+"'/></td><td>"+element.summary+"</td><td>"+element.author_name+"</td><td>"+element.publisher_name+"</td><td><i class='fa fa-trash text-danger'></i></td></tr>"
+                        $('#tblBook').append(rawHtml)
+                    })
+                }
+            }
+        })
     }
 
     const addBook = () => {
@@ -72,5 +85,9 @@
     const editBook = (id) => {
         window.location = "/eCommerce/admin/add-or-edit-book?id=" + id;
     }
-
+    
+    const covertMoney = (money) => {
+        let rs = money.toLocaleString('it-IT', {style : 'currency', currency : 'VND'});
+        return rs;
+    }
 </script>

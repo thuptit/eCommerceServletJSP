@@ -81,6 +81,14 @@ public class BaseController extends HttpServlet {
                 case "/admin/dashboard":
                     dashboardAdmin(request, response);
                     break;
+                case "/admin/getListBook": {
+                    try {
+                        getListBook(request, response);
+                    } catch (JSONException ex) {
+                        Logger.getLogger(BaseController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
                 //start route of author
                 case "/admin/author":
                     authorAdmin(request, response);
@@ -429,6 +437,12 @@ public class BaseController extends HttpServlet {
             isSuccess = bookDao.updateBook(new Book(id, isbn, title, summary, id, language, new Author(authorId), new Publisher(authorId)), new BookItem(barcode, discount, id, new Book(), new HashSet<>()));
         }
         ResponseDto res = isSuccess ? new ResponseDto(true, "Thành công", null) : new ResponseDto(true, "Có lỗi xảy ra", null);
+        responseClient(res, response);
+    }
+
+    private void getListBook(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
+        List books = bookDao.getListBook();
+        ResponseDto res = new ResponseDto(true, "Successed", books);
         responseClient(res, response);
     }
     //end handle admin page

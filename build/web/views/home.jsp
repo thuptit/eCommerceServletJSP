@@ -2,7 +2,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="components/header.jsp" %> 
 <%@ include file="components/navbar.jsp" %> 
-        <!-- home section starts  -->
+<!-- home section starts  -->
 
 <section class="home" id="home">
 
@@ -25,7 +25,7 @@
     <div class="row">
 
         <div class="image">
-            <img src="${pageContext.request.contextPath}/assets/images/about-img.jpeg" alt="">
+            <img src="${pageContext.request.contextPath}/assets/images/about-book.jpg" alt="">
         </div>
 
         <div class="content">
@@ -47,50 +47,7 @@
 
     <h1 class="heading"> Sách <span>menu</span> </h1>
 
-    <div class="box-container">
-
-        <div class="box">
-            <img src="${pageContext.request.contextPath}/assets/images/menu-1.png" alt="">
-            <h3>tasty and healty</h3>
-            <div class="price">200.000 VNĐ <span>230.000 VNĐ</span></div>
-            <a href="${pageContext.request.contextPath}/detailbook?id=1" class="btn">Thêm vào giỏ hàng</a>
-        </div>
-
-        <div class="box">
-            <img src="${pageContext.request.contextPath}/assets/images/menu-2.png" alt="">
-            <h3>tasty and healty</h3>
-            <div class="price">200.000 VNĐ <span>230.000 VNĐ</span></div>
-            <a href="#" class="btn">Thêm vào giỏ hàng</a>
-        </div>
-
-        <div class="box">
-            <img src="${pageContext.request.contextPath}/assets/images/menu-3.png" alt="">
-            <h3>tasty and healty</h3>
-            <div class="price">200.000 VNĐ <span>230.000 VNĐ</span></div>
-            <a href="#" class="btn">Thêm vào giỏ hàng</a>
-        </div>
-
-        <div class="box">
-            <img src="${pageContext.request.contextPath}/assets/images/menu-4.png" alt="">
-            <h3>tasty and healty</h3>
-            <div class="price">200.000 VNĐ <span>230.000 VNĐ</span></div>
-            <a href="#" class="btn">Thêm vào giỏ hàng</a>
-        </div>
-
-        <div class="box">
-            <img src="${pageContext.request.contextPath}/assets/images/menu-5.png" alt="">
-            <h3>tasty and healty</h3>
-            <div class="price">200.000 VNĐ <span>230.000 VNĐ</span></div>
-            <a href="#" class="btn">Thêm vào giỏ hàng</a>
-        </div>
-
-        <div class="box">
-            <img src="${pageContext.request.contextPath}/assets/images/menu-6.png" alt="">
-            <h3>tasty and healty</h3>
-            <div class="price">200.000 VNĐ <span>230.000 VNĐ</span></div>
-            <a href="#" class="btn">Thêm vào giỏ hàng</a>
-        </div>
-
+    <div class="box-container" id="listBook">
     </div>
 
 </section>
@@ -208,7 +165,7 @@
                 <i class="fas fa-star-half-alt"></i>
             </div>
         </div>
-        
+
         <div class="box">
             <img src="${pageContext.request.contextPath}/assets/images/quote-img.png" alt="" class="quote">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.</p>
@@ -317,14 +274,78 @@
 
 <%@ include file="components/footer.jsp" %> 
 <script type="text/javascript">
-    $(document).ready( function() {
+    $(document).ready(function () {
         let username = sessionStorage.getItem("username");
-        if(username){
+        if (username) {
             $('#btnRegister').hide();
             $('#btnLogin').hide();
             $('#character').hide();
             let rawAccount = `<i class='fa fa-user ms-2'></i>` + username;
             $('#usernameText').html(rawAccount);
         }
+        getListBook();
+        countItem();
     })
+    const getListBook = () => {
+        $.ajax({
+            url: '/eCommerce/admin/getListBook',
+            type: 'GET',
+            success: (res) => {
+                if (res.data.length > 0) {
+                    let count = 0;
+                    res.data.forEach((element) => {
+                        let rawHtml = "<div class='box'><img src='" + element.path + "' alt=''><h3>" + element.title + "</h3><div class='price'>" + covertMoney(element.price) + "</div><a href='javascript:void(0)' class='btn' onclick='addToCart(" + JSON.stringify(element) + ")'>Thêm vào giỏ hàng</a></div>";
+                        $('#listBook').append(rawHtml)
+                    })
+                }
+            }
+        })
+    }
+    const covertMoney = (money) => {
+        let rs = money.toLocaleString('it-IT', {style: 'currency', currency: 'VND'});
+        return rs;
+    }
+    const addToCart = (data) => {
+        let userId = sessionStorage.getItem("id");
+        if(userId){
+            let cookie = Cookies.get('items');
+            if(cookie){
+                let check = false;
+                let items = JSON.parse(Cookies.get('items'))
+                items.data.forEach((element) => {
+                    if(element.id == data.id){
+                        toastr.error("Sản phẩm này đã được thêm vào giỏ hàng trước đó!");
+                        check = true;
+                        return;
+                    }
+                })
+                if(check) return;
+                items.data.push(data);
+                Cookies.set('items', items, { expires: 30 })
+                console.log(JSON.parse(Cookies.get('items')))
+                toastr.success("Thêm vào giỏ hàng!");
+            }
+            else{
+                let items = {
+                    userId: userId,
+                    data: []
+                }
+                items.data.push(data);
+                Cookies.set('items', items, { expires: 30 })
+                toastr.success("Thêm vào giỏ hàng!");
+            }
+            countItem();
+        }
+        else{
+            window.location = "/eCommerce/login";
+        }
+    }
+    const countItem = () => {
+        let cookie = Cookies.get('items');
+        if(cookie){
+            let items = JSON.parse(Cookies.get('items'))
+            let total = items.data.length;
+            $('#countItems').html(total)
+        }
+    }
 </script>

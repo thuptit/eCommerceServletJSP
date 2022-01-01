@@ -16,5 +16,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.10/sweetalert2.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/toastr.css">
         <script src="${pageContext.request.contextPath}/assets/js/jquery.3.4.1.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js"></script>
     </head>
     <body>
