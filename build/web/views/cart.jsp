@@ -6,138 +6,116 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ include file="components/header.jsp" %> 
-<div class="container">                
-    <div class="contentbar">                
-        <!-- Start row -->
-        <div class="row">
-            <!-- Start col -->
-            <div class="col-md-12 col-lg-12 col-xl-12">
-                <div class="card m-b-30">
-                    <div class="card-header">
-                        <h5 class="card-title">Cart</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-10 col-xl-8">
-                                <div class="cart-container">
-                                    <div class="cart-head">
-                                        <div class="table-responsive">
-                                            <table class="table table-borderless">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">#</th>
-                                                        <th scope="col">Action</th>                                               
-                                                        <th scope="col">Photo</th>
-                                                        <th scope="col">Product</th>
-                                                        <th scope="col">Qty</th>
-                                                        <th scope="col">Price</th>
-                                                        <th scope="col" class="text-right">Total</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td><a href="#" class="text-danger"><i class="ri-delete-bin-3-line"></i></a></td>
-                                                        <td><img src="https://themesbox.in/admin-templates/olian/html/light-vertical/assets/images/ecommerce/product_01.svg" class="img-fluid" width="35" alt="product"></td>
-                                                        <td>Apple Watch</td>
-                                                        <td>
-                                                            <div class="form-group mb-0">
-                                                                <input type="number" class="form-control cart-qty" name="cartQty1" id="cartQty1" value="1">
-                                                            </div>
-                                                        </td>
-                                                        <td>$10</td>
-                                                        <td class="text-right">$500</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">2</th>
-                                                        <td><a href="#" class="text-danger"><i class="ri-delete-bin-3-line"></i></a></td>
-                                                        <td><img src="https://themesbox.in/admin-templates/olian/html/light-vertical/assets/images/ecommerce/product_02.svg" class="img-fluid" width="35" alt="product"></td>
-                                                        <td>Apple iPhone</td>
-                                                        <td>
-                                                            <div class="form-group mb-0">
-                                                                <input type="number" class="form-control cart-qty" name="cartQty2" id="cartQty2" value="1">
-                                                            </div>
-                                                        </td>
-                                                        <td>$20</td>
-                                                        <td class="text-right">$200</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">3</th>
-                                                        <td><a href="#" class="text-danger"><i class="ri-delete-bin-3-line"></i></a></td>
-                                                        <td><img src="https://themesbox.in/admin-templates/olian/html/light-vertical/assets/images/ecommerce/product_03.svg" class="img-fluid" width="35" alt="product"></td>
-                                                        <td>Apple iPad</td>
-                                                        <td>
-                                                            <div class="form-group mb-0">
-                                                                <input type="number" class="form-control cart-qty" name="cartQty3" id="cartQty3" value="1">
-                                                            </div>
-                                                        </td>
-                                                        <td>$30</td>
-                                                        <td class="text-right">$300</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="cart-body">
-                                        <div class="row">
-                                            <div class="col-md-12 order-2 order-lg-1 col-lg-5 col-xl-6">
-                                                <div class="order-note">
-                                                    <form>
-                                                        <div class="form-group">
-                                                            <div class="input-group">
-                                                                <input type="search" class="form-control" placeholder="Coupon Code" aria-label="Search" aria-describedby="button-addonTags">
-                                                                <div class="input-group-append">
-                                                                    <button class="input-group-text" type="submit" id="button-addonTags">Apply</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label for="specialNotes">Special Note for this order:</label>
-                                                            <textarea class="form-control" name="specialNotes" id="specialNotes" rows="3" placeholder="Message here"></textarea>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 order-1 order-lg-2 col-lg-7 col-xl-6">
-                                                <div class="order-total table-responsive ">
-                                                    <table class="table table-borderless text-right">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Sub Total :</td>
-                                                                <td>$1000.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Shipping :</td>
-                                                                <td>$0.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>Tax(18%) :</td>
-                                                                <td>$180.00</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="f-w-7 font-18"><h4>Amount :</h4></td>
-                                                                <td class="f-w-7 font-18"><h4>$1180.00</h4></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="cart-footer text-right">
-                                        <button type="button" class="btn btn-info my-1"><i class="ri-save-line mr-2"></i>Update Cart</button>
-                                        <a href="page-checkout.html" class="btn btn-success my-1">Proceed to Checkout<i class="ri-arrow-right-line ml-2"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<%@ include file="components/navbar.jsp" %> 
+<div class="container vh-100" style="margin-top: 16rem; color: #ffffff">                
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Giỏ hàng</h1>
+        </div>
+    </div>
+    <div class="row" style="font-size: 1.5rem;">
+        <div class="col-md-12">
+            <table class="table table-responsive">
+                <thead>
+                    <tr class="text-white">
+                        <th scope="col">#</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody id="tblCart">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row" style="float: right">
+        <div class="col-md-3">
+            <button class="btn btn-primary" onclick="order()">Đặt hàng</button>
+            <button class="btn-danger">Hủy</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <label>Hình thức thanh toán:</label>
                 </div>
             </div>
-            <!-- End col -->
+            <div class="row">
+                <div class="col-md-3">
+                    <label>Hình thức giao hàng:</label>
+                </div>
+                <div class="col-md-6">
+                    <select id="shipment">
+                        <option>Giao hàng nhanh</option>
+                        <option>Giao hàng tiết kiệm</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+            </div>
         </div>
-        <!-- End row -->
     </div>
 </div>
 
 <%@ include file="components/footer.jsp" %>
+<script type="text/javascript">
+    $(document).ready(() => {
+        countItem();
+        getCart();
+    })
+    const order = () => {
+        $('#')
+    }
+    const getCart = () => {
+        $('#tblCart').children().remove()
+        let cookie = Cookies.get('items');
+        let userId = sessionStorage.getItem('id')
+        if (cookie && userId) {
+            let items = JSON.parse(Cookies.get('items'))
+            let count = 0;
+            let totalMoney = 0;
+            if (items.data.length > 0) {
+                items.data.forEach((element) => {
+                    count++;
+                    totalMoney += element.price;
+                    let raw = "<tr class='text-white' id='" + element.id + "'><td>" + count + "</td><td><img width='100' height='100' src='" + element.path + "' /></td><td>" + element.title + "</td><td>" + convertMoney(element.price) + "</td><td><i class='fa fa-trash text-danger' onclick='removeItem(" + JSON.stringify(element) + ")'></i></td></tr>";
+                    $('#tblCart').append(raw);
+                })
+                let raw = "<tr class='text-white'><td colspan='3'>Tổng tiền:</td><td colspan='2'>" + convertMoney(totalMoney) + "</td></tr>";
+                $('#tblCart').append(raw);
+            }
+        }
+    }
+    const removeItem = (item) => {
+        let items = JSON.parse(Cookies.get('items'));
+        let index = items.data.findIndex(x => x.id == item.id);
+        items.data.splice(index, 1);
+        Cookies.set("items", items);
+        getCart();
+    }
+    const countItem = () => {
+        let cookie = Cookies.get('items');
+        let userId = sessionStorage.getItem('id')
+        if (cookie && userId) {
+            let items = JSON.parse(Cookies.get('items'))
+            if (items.userId == userId) {
+                let total = items.data.length;
+                console.log(total)
+                $('#countItems').html(total)
+            } else {
+                $('#countItems').hide()
+            }
+        } else {
+            $('#countItems').hide();
+        }
+    }
+    const convertMoney = (money) => {
+        let rs = money.toLocaleString('it-IT', {style: 'currency', currency: 'VND'});
+        return rs;
+    }
+</script>

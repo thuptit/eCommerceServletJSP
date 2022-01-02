@@ -737,3 +737,7 @@ input:focus{
     top: -5px;
     left: 20px;
 }
+.box p{
+    font-size: 1.5rem;
+    color: azure;
+}

@@ -36,3 +36,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </body>
 </html>
+<script type="text/javascript">
+    $(document).ready( () => {
+        let username = sessionStorage.getItem("username");
+        if (username) {
+            $('#btnRegister').hide();
+            $('#btnLogin').hide();
+            $('#character').hide();
+            let rawAccount = `<i class='fa fa-user ms-2'></i>` + username;
+            $('#usernameText').html(rawAccount);
+        }
+    })
+</script>

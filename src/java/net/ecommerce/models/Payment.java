@@ -88,5 +88,4 @@ public class Payment implements Serializable {
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
     }
-
 }

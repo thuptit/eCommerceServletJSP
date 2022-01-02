@@ -56,11 +56,11 @@
 
 <section class="products" id="products">
 
-    <h1 class="heading"> Sách <span>yêu thích</span> </h1>
+<!--    <h1 class="heading"> Sách <span>yêu thích</span> </h1>-->
 
     <div class="box-container">
 
-        <div class="box">
+<!--        <div class="box">
             <div class="icons">
                 <a href="#" class="fas fa-shopping-cart"></a>
                 <a href="#" class="fas fa-heart"></a>
@@ -80,51 +80,7 @@
                 </div>
                 <div class="price">300.000 VNĐ <span>350.000 VNĐ</span></div>
             </div>
-        </div>
-
-        <div class="box">
-            <div class="icons">
-                <a href="#" class="fas fa-shopping-cart"></a>
-                <a href="#" class="fas fa-heart"></a>
-                <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-                <img src="${pageContext.request.contextPath}/assets/images/product-2.png" alt="">
-            </div>
-            <div class="content">
-                <h3>fresh coffee</h3>
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                </div>
-                <div class="price">300.000 VNĐ <span>350.000 VNĐ</span></div>
-            </div>
-        </div>
-
-        <div class="box">
-            <div class="icons">
-                <a href="#" class="fas fa-shopping-cart"></a>
-                <a href="#" class="fas fa-heart"></a>
-                <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-                <img src="${pageContext.request.contextPath}/assets/images/product-3.png" alt="">
-            </div>
-            <div class="content">
-                <h3>fresh coffee</h3>
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                </div>
-                <div class="price">300.000 VNĐ <span>350.000 VNĐ</span></div>
-            </div>
-        </div>
+        </div>-->
 
     </div>
 
@@ -275,14 +231,6 @@
 <%@ include file="components/footer.jsp" %> 
 <script type="text/javascript">
     $(document).ready(function () {
-        let username = sessionStorage.getItem("username");
-        if (username) {
-            $('#btnRegister').hide();
-            $('#btnLogin').hide();
-            $('#character').hide();
-            let rawAccount = `<i class='fa fa-user ms-2'></i>` + username;
-            $('#usernameText').html(rawAccount);
-        }
         getListBook();
         countItem();
     })
@@ -294,7 +242,7 @@
                 if (res.data.length > 0) {
                     let count = 0;
                     res.data.forEach((element) => {
-                        let rawHtml = "<div class='box'><img src='" + element.path + "' alt=''><h3>" + element.title + "</h3><div class='price'>" + covertMoney(element.price) + "</div><a href='javascript:void(0)' class='btn' onclick='addToCart(" + JSON.stringify(element) + ")'>Thêm vào giỏ hàng</a></div>";
+                        let rawHtml = "<div class='box'><img src='" + element.path + "' alt=''><h3>" + element.title + "</h3>"+element.summary+"<div class='price'>" + covertMoney(element.price) + "</div><a href='javascript:void(0)' class='btn' onclick='addToCart(" + JSON.stringify(element) + ")'>Thêm vào giỏ hàng</a></div>";
                         $('#listBook').append(rawHtml)
                     })
                 }
@@ -324,6 +272,7 @@
                 Cookies.set('items', items, { expires: 30 })
                 console.log(JSON.parse(Cookies.get('items')))
                 toastr.success("Thêm vào giỏ hàng!");
+                countItem();
             }
             else{
                 let items = {
@@ -333,8 +282,8 @@
                 items.data.push(data);
                 Cookies.set('items', items, { expires: 30 })
                 toastr.success("Thêm vào giỏ hàng!");
+                countItem();
             }
-            countItem();
         }
         else{
             window.location = "/eCommerce/login";
@@ -342,10 +291,20 @@
     }
     const countItem = () => {
         let cookie = Cookies.get('items');
-        if(cookie){
+        let userId = sessionStorage.getItem('id')
+        if(cookie&&userId){
             let items = JSON.parse(Cookies.get('items'))
-            let total = items.data.length;
-            $('#countItems').html(total)
+            if(items.userId == userId){
+                let total = items.data.length;
+                console.log(total)
+                $('#countItems').html(total)
+            }
+            else{
+                $('#countItems').hide()
+            }
+        }
+        else{
+            $('#countItems').hide();
         }
     }
 </script>

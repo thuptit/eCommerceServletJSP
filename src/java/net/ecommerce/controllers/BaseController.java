@@ -175,6 +175,9 @@ public class BaseController extends HttpServlet {
                 case "/login":
                     login(request, response);
                     break;
+                case "/cart":
+                    cartView(request, response);
+                    break;
                 default:
                     home(request, response);
                     break;
@@ -271,6 +274,9 @@ public class BaseController extends HttpServlet {
 
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("views/login.jsp").forward(request, response);
+    }
+    private void cartView(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("views/cart.jsp").forward(request, response);
     }
     // end views customer page
 
@@ -420,7 +426,7 @@ public class BaseController extends HttpServlet {
     private void saveBook(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
         String isbn = request.getParameter("isbn");
         String language = request.getParameter("language");
-        String numberOfPage = request.getParameter("numberOfPage");
+        int numberOfPage = Integer.parseInt(request.getParameter("numberOfPage"));
         String summary = request.getParameter("summary");
         String title = request.getParameter("name");
         int authorId = Integer.parseInt(request.getParameter("author"));
@@ -432,9 +438,9 @@ public class BaseController extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         boolean isSuccess = false;
         if (id < 1) {
-            isSuccess = bookDao.insertBook(new Book(id, isbn, title, summary, id, language, new Author(authorId), new Publisher(publisherId)), new BookItem(barcode, discount, price, new Book(), new HashSet<>()), url);
+            isSuccess = bookDao.insertBook(new Book(id, isbn, title, summary, numberOfPage, language, new Author(authorId), new Publisher(publisherId)), new BookItem(barcode, discount, price, new Book(), new HashSet<>()), url);
         } else {
-            isSuccess = bookDao.updateBook(new Book(id, isbn, title, summary, id, language, new Author(authorId), new Publisher(authorId)), new BookItem(barcode, discount, id, new Book(), new HashSet<>()));
+            isSuccess = bookDao.updateBook(new Book(id, isbn, title, summary, numberOfPage, language, new Author(authorId), new Publisher(authorId)), new BookItem(barcode, discount, id, new Book(), new HashSet<>()));
         }
         ResponseDto res = isSuccess ? new ResponseDto(true, "Thành công", null) : new ResponseDto(true, "Có lỗi xảy ra", null);
         responseClient(res, response);
