@@ -5,15 +5,11 @@
  */
 package net.ecommerce.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.*;
 import javax.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 /**
  *
  * @author thunv
@@ -94,6 +90,19 @@ public class Shipment implements Serializable {
     }
 
     public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Shipment() {
+    }
+
+    public Shipment(int id, String type, String codeShip, String address, Date createdDate, Date updatedDate, Order order) {
+        this.id = id;
+        this.type = type;
+        this.codeShip = codeShip;
+        this.address = address;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
         this.order = order;
     }
     

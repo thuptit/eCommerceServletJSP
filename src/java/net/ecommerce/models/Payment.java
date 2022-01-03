@@ -88,4 +88,17 @@ public class Payment implements Serializable {
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
     }
+
+    public Payment() {
+    }
+
+    public Payment(int id, float amount, Date createdDate, Date updatedDate, Order order, Shipment shipment) {
+        this.id = id;
+        this.amount = amount;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.order = order;
+        this.shipment = shipment;
+    }
+    
 }

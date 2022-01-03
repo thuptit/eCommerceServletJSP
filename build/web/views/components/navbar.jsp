@@ -13,7 +13,7 @@
     </a>
 
     <nav class="navbar">
-        <a href="#home">trang chủ</a>
+        <a href="/eCommerce">trang chủ</a>
         <a href="#about">giới thiệu</a>
         <a href="#menu">danh mục</a>
         <a href="#products">sản phẩm</a>

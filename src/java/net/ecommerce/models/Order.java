@@ -88,6 +88,18 @@ public class Order implements Serializable {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
+
+    public Order() {
+    }
+
+    public Order(Integer id, Date createdDate, Date updatedDate, String status, Customer customer, Cart cart) {
+        this.id = id;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.status = status;
+        this.customer = customer;
+        this.cart = cart;
+    }
     
 }
 

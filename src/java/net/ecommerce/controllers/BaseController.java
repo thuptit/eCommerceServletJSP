@@ -34,11 +34,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dto.RequestOrderDto;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.ecommerce.daos.OrderDao;
 import net.ecommerce.models.Book;
 import net.ecommerce.models.BookItem;
+import net.ecommerce.models.Cart;
 import net.ecommerce.models.FileDb;
 import net.ecommerce.models.Publisher;
 
@@ -51,13 +54,14 @@ public class BaseController extends HttpServlet {
     private BookDao bookDao;
     private CustomerDao customerDao;
     private Gson gson;
+    private OrderDao orderDao;
 
     @Override
     public void init() {
         bookDao = new BookDao();
         customerDao = new CustomerDao();
         gson = new Gson();
-
+        orderDao = new OrderDao();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -256,6 +260,9 @@ public class BaseController extends HttpServlet {
                         }
                     }
                     break;
+                case "/order":
+                    order(request, response);
+                    break;
                 default:
                     home(request, response);
                     break;
@@ -275,10 +282,29 @@ public class BaseController extends HttpServlet {
     private void login(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("views/login.jsp").forward(request, response);
     }
+
     private void cartView(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("views/cart.jsp").forward(request, response);
     }
     // end views customer page
+
+    private void order(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String ids = request.getParameter("ids");
+        int amount = Integer.parseInt(request.getParameter("amount"));
+        int status = Integer.parseInt(request.getParameter("status"));
+        float totalPrice = Float.parseFloat(request.getParameter("totalPrice"));
+        String address = request.getParameter("address");
+        String typeShip = request.getParameter("typeShip");
+        int typePayment = Integer.parseInt(request.getParameter("typePayment"));
+        int customerId = Integer.parseInt(request.getParameter("customerId"));
+        String bankid = request.getParameter("bankid");
+        String bankName = request.getParameter("bankName");
+        String expDate = request.getParameter("expDate");
+        String typeCard = request.getParameter("typeCard");
+        String number = request.getParameter("numberAccount");
+        RequestOrderDto rqOrder = new RequestOrderDto(ids, amount, status, totalPrice, address, typeShip, typePayment, customerId, bankid, bankName, expDate, typeCard, number);
+        orderDao.order(rqOrder);
+    }
 
     //start handle customer page
     //end handle customer page

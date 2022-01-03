@@ -7,6 +7,7 @@ package net.ecommerce.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -32,4 +33,16 @@ public class Cash extends Payment implements Serializable {
         this.cashTendered = cashTendered;
     }
 
+    public Cash() {
+    }
+
+    public Cash(float cashTendered) {
+        this.cashTendered = cashTendered;
+    }
+
+    public Cash(float cashTendered, int id, float amount, Date createdDate, Date updatedDate, Order order, Shipment shipment) {
+        super(id, amount, createdDate, updatedDate, order, shipment);
+        this.cashTendered = cashTendered;
+    }
+    
 }

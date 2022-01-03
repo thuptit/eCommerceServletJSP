@@ -112,5 +112,18 @@ public class Cart implements Serializable {
         this.bookItems = bookItems;
     }
 
+    public Cart() {
+    }
     
+    
+    public Cart(Integer id, float totalPrice, int amount, int status, Date createdDate, Date updatedDate, Customer customer, Set<BookItem> bookItems) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.amount = amount;
+        this.status = status;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.customer = customer;
+        this.bookItems = bookItems;
+    }
 }

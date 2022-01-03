@@ -55,6 +55,22 @@ public class Credit extends Payment implements Serializable {
     public void setExp_date(Date exp_date) {
         this.exp_date = exp_date;
     }
+
+    public Credit() {
+    }
+
+    public Credit(String number, String type, Date exp_date) {
+        this.number = number;
+        this.type = type;
+        this.exp_date = exp_date;
+    }
+
+    public Credit(String number, String type, Date exp_date, int id, float amount, Date createdDate, Date updatedDate, Order order, Shipment shipment) {
+        super(id, amount, createdDate, updatedDate, order, shipment);
+        this.number = number;
+        this.type = type;
+        this.exp_date = exp_date;
+    }
     
 }
 

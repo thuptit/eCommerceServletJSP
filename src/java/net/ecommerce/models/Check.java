@@ -7,6 +7,7 @@ package net.ecommerce.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,20 @@ public class Check extends Payment implements Serializable {
     }
 
     public void setBankId(String bankId) {
+        this.bankId = bankId;
+    }
+
+    public Check() {
+    }
+
+    public Check(String name, String bankId) {
+        this.name = name;
+        this.bankId = bankId;
+    }
+
+    public Check(String name, String bankId, int id, float amount, Date createdDate, Date updatedDate, Order order, Shipment shipment) {
+        super(id, amount, createdDate, updatedDate, order, shipment);
+        this.name = name;
         this.bankId = bankId;
     }
 
