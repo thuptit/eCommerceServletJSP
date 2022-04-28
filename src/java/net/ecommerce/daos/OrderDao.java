@@ -5,9 +5,9 @@
  */
 package net.ecommerce.daos;
 
+import dto.OrderDto;
 import dto.RequestOrderDto;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -24,15 +24,24 @@ import net.ecommerce.models.Shipment;
 import net.ecommerce.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 
 /**
  *
  * @author thunv
  */
-public class OrderDao {
+public class OrderDao implements IOderDao{
+    private ShipmentDao shipmentDao;
+    private PaymentDao paymentDao;
+
+    public OrderDao() {
+        shipmentDao = new ShipmentDao();
+        paymentDao = new PaymentDao();
+    }
+    
+    @Override
     public void order(RequestOrderDto rqOrder){
         Transaction transaction = null;
-        boolean isCheck = false;
         try {
             Session session = HibernateUtils.getSessionFactory().openSession();
             // start a transaction
@@ -66,12 +75,40 @@ public class OrderDao {
             }
             // commit transaction
             transaction.commit();
-            isCheck = true;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
             }
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List getListOrder(int customerId) {
+        Transaction transaction = null;
+        List result = null;
+        try{
+            Session session = HibernateUtils.getSessionFactory().openSession();
+            // start a transaction
+            transaction = session.beginTransaction();
+            // get an account object
+            String query = "select o.id, o.status, ship.address, c.amount, c.total_price, o.created_date, ship.type, n.first_name, n.last_name, n.middle_name, cus.DOB, cus.phone, cus.email \n"
+                    + "from orders o\n"
+                    + "join shipments ship on ship.order_id = o.id\n"
+                    + "join carts c on c.id = o.cart_id\n"
+                    + "join customers cus on cus.id = o.customer_id\n"
+                    + "join full_names n on n.customer_id = cus.id\n"
+                    + "where cus.id = :id";
+            result = session.createSQLQuery(query).setParameter("id", customerId).setResultTransformer(Transformers.aliasToBean(OrderDto.class)).list();
+            // commit transaction
+            transaction.commit();
+        }
+        catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return result;
     }
 }

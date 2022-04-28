@@ -24,230 +24,17 @@ import org.hibernate.transform.Transformers;
  *
  * @author thunv
  */
-public class BookDao {
-
-    public boolean saveAuthor(Author author) {
-        Transaction transaction = null;
-        boolean isCheck = false;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // save the student object
-            if (author.getId() > 0) {
-                session.update(author);
-            } else {
-                session.save(author);
-            }
-            // commit transaction
-            transaction.commit();
-            isCheck = true;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return isCheck;
+public class BookDao implements IBookDao{
+    
+    private AuthorDao authorDao;
+    private PublisherDao publisherDao;
+    
+    public BookDao(){
+        authorDao = new AuthorDao();
+        publisherDao = new PublisherDao();
     }
 
-    public List getByIdAuthor(int id) {
-        Transaction transaction = null;
-        List< Author> listAuthor = null;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            String query = "from Author au where au.id = :id";
-            listAuthor = session.createQuery(query).setParameter("id", id).list();
-
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return listAuthor;
-    }
-
-    public List<Author> getListAuthors(String name) {
-        Transaction transaction = null;
-        List< Author> listAuthor = null;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            String query = "from Author au where :name is null or au.name like :names";
-            listAuthor = session.createQuery(query).setParameter("name", name).setParameter("names", "%" + name + "%").list();
-
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return listAuthor;
-
-    }
-
-    public boolean deleteAuthor(Author author) {
-        Transaction transaction = null;
-        boolean isCheck = false;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            session.delete(author);
-            // commit transaction
-            transaction.commit();
-            isCheck = true;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return isCheck;
-    }
-
-    public boolean savePublisher(Publisher publisher) {
-        Transaction transaction = null;
-        boolean isCheck = false;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // save the student object
-            if (publisher.getId() > 0) {
-                session.update(publisher);
-            } else {
-                session.save(publisher);
-            }
-            // commit transaction
-            transaction.commit();
-            isCheck = true;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return isCheck;
-    }
-
-    public List getByIdPublisher(int id) {
-        Transaction transaction = null;
-        List< Publisher> list = null;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            String query = "from Publisher au where au.id = :id";
-            list = session.createQuery(query).setParameter("id", id).list();
-
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    public List<Author> getListPublisher(String name) {
-        Transaction transaction = null;
-        List< Author> listAuthor = null;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            String query = "from Publisher au where :name is null or au.name like :names";
-            listAuthor = session.createQuery(query).setParameter("name", name).setParameter("names", "%" + name + "%").list();
-
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return listAuthor;
-
-    }
-
-    public boolean deletePublisher(Publisher publisher) {
-        Transaction transaction = null;
-        boolean isCheck = false;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            session.delete(publisher);
-            // commit transaction
-            transaction.commit();
-            isCheck = true;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return isCheck;
-    }
-
-    public List getDropdownPublisher() {
-        Transaction transaction = null;
-        List listPublisher = null;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            listPublisher = session.createQuery("from Publisher").list();
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return listPublisher;
-    }
-
-    public List getDropdownAuthor() {
-        Transaction transaction = null;
-        List listAuthor = null;
-        try {
-            Session session = HibernateUtils.getSessionFactory().openSession();
-            // start a transaction
-            transaction = session.beginTransaction();
-            // get an user object
-            listAuthor = session.createQuery("from Author").list();
-            // commit transaction
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-        }
-        return listAuthor;
-    }
-
+    @Override
     public boolean insertBook(Book book, BookItem bookItem, String url) {
         Transaction transaction = null;
         boolean isSuccess = false;
@@ -256,9 +43,9 @@ public class BookDao {
             // start a transaction
             transaction = session.beginTransaction();
             // get an user object
-            Author author = (Author) session.get(Author.class, book.getAuthor().getId());
+            Author author = authorDao.getAuthorById(book.getAuthor().getId());
             book.setAuthor(author);
-            Publisher publisher = (Publisher) session.get(Publisher.class, book.getPublisher().getId());
+            Publisher publisher = publisherDao.getPublisherById(book.getPublisher().getId());
             book.setPublisher(publisher);
             session.save(book);
             bookItem.setBook(book);
@@ -280,6 +67,7 @@ public class BookDao {
         return isSuccess;
     }
 
+    @Override
     public boolean updateBook(Book book, BookItem bookItem) {
         Transaction transaction = null;
         boolean isSuccess = false;
@@ -303,9 +91,14 @@ public class BookDao {
         return isSuccess;
     }
 
-    public List getListBook() {
+    @Override
+    public List getListBook(String name) {
         Transaction transaction = null;
         List<BookDto> books = null;
+        String names="";
+        if(name.equalsIgnoreCase("")){
+            name = null;
+        }
         try {
             Session session = HibernateUtils.getSessionFactory().openSession();
             // start a transaction
@@ -317,8 +110,9 @@ public class BookDao {
                     + "JOIN authors au ON b.author_id = au.id\n"
                     + "JOIN publishers pb ON b.publisher_id = pb.id\n"
                     + "JOIN book_item_file bif ON bif.book_item_id = bi.id\n"
-                    + "JOIN files f on f.id = bif.file_id";
-            books = session.createSQLQuery(query).setResultTransformer(Transformers.aliasToBean(BookDto.class)).list();
+                    + "JOIN files f on f.id = bif.file_id\n"
+                    + "WHERE ISNULL(:name) OR b.title like :names";
+            books = session.createSQLQuery(query).setParameter("name", name).setParameter("names", "%"+name+"%").setResultTransformer(Transformers.aliasToBean(BookDto.class)).list();
             // commit transaction
             transaction.commit();
         } catch (Exception e) {

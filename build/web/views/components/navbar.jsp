@@ -30,7 +30,14 @@
         <a class="ms-4 me-2 link-account" id="btnRegister" style="font-size: 2rem; color: #fff" href="">Đăng ký</a>
         <span style="font-size: 2rem; color: #fff" id="character">/</span>
         <a class=" ms-2 link-account" id="btnLogin" style="font-size: 2rem; color: #fff" href="/eCommerce/login">Đăng nhập</a>
-        <a class=" ms-4 link-account" style="font-size: 2rem; color: #fff; text-decoration: none; text-transform: none" href="" id="usernameText"> </a>
+        <div class="dropdown">
+            <a class=" ms-4 dropdown-toggle" type="button" style="font-size: 2rem; color: #fff; text-transform: none" id="usernameText" data-bs-toggle="dropdown" aria-expanded="false"></a>
+            <ul class="dropdown-menu" aria-labelledby="usernameText">
+                <li><a class="dropdown-item" href="/eCommerce/history-order">Lịch sử đơn hàng</a></li>
+                <li><a class="dropdown-item" href="#">Xem thông tin tài khoản</a></li>
+                <li><a class="dropdown-item" href="#">Dổi mật khẩu</a></li>
+            </ul>
+        </div>
         <div class="fas fa-bars" id="menu-btn"></div>
     </div>
 

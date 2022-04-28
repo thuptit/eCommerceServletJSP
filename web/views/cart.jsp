@@ -223,7 +223,12 @@
             data,
             type: 'POST',
             success: (res) => {
-                console.log(res);
+                let items = {
+                    userId: userId,
+                    data: []
+                }
+                Cookies.set('items', items)
+                window.location = "/eCommerce/history-order";
             }
         })
     }

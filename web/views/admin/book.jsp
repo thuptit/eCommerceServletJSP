@@ -64,6 +64,7 @@
     const getListBook = () => {
         $.ajax({
             url: '/eCommerce/admin/getListBook',
+            data: {name: ''},
             type: 'GET',
             success: (res) => {
                 if(res.data.length > 0){

@@ -46,8 +46,17 @@
 <section class="menu" id="menu">
 
     <h1 class="heading"> Sách <span>menu</span> </h1>
+    
+    <div class="row">
+        <div class="col-md-4 offset-md-3">
+            <input type="text" class="form-control" placeholder="search book..." id="searchbook" style="text-transform: none">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" onclick="getListBook()">Search</button>
+        </div>
+    </div>
 
-    <div class="box-container" id="listBook">
+    <div class="box-container mt-3" id="listBook">
     </div>
 
 </section>
@@ -59,28 +68,6 @@
 <!--    <h1 class="heading"> Sách <span>yêu thích</span> </h1>-->
 
     <div class="box-container">
-
-<!--        <div class="box">
-            <div class="icons">
-                <a href="#" class="fas fa-shopping-cart"></a>
-                <a href="#" class="fas fa-heart"></a>
-                <a href="#" class="fas fa-eye"></a>
-            </div>
-            <div class="image">
-                <img src="${pageContext.request.contextPath}/assets/images/product-1.png" alt="">
-            </div>
-            <div class="content">
-                <h3>fresh coffee</h3>
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                </div>
-                <div class="price">300.000 VNĐ <span>350.000 VNĐ</span></div>
-            </div>
-        </div>-->
 
     </div>
 
@@ -96,7 +83,7 @@
 
         <div class="box">
             <img src="${pageContext.request.contextPath}/assets/images/quote-img.png" alt="" class="quote">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.</p>
+            <p>Những cuốn sách rất tuyệt vời và chất lượng, hy vọng các bạn sẽ mang đến những cuốn sách hay hơn nữa!</p>
             <img src="${pageContext.request.contextPath}/assets/images/pic-1.png" class="user" alt="">
             <h3>Nguyễn Đình Hiếu</h3>
             <div class="stars">
@@ -110,7 +97,7 @@
 
         <div class="box">
             <img src="${pageContext.request.contextPath}/assets/images/quote-img.png" alt="" class="quote">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.</p>
+            <p>Thời gian rảnh tôi luôn đọc sách và tìm hiểu các tri thức mới, các bạn luôn có những cuốn sách rất chất lượng</p>
             <img src="${pageContext.request.contextPath}/assets/images/pic-2.png" class="user" alt="">
             <h3>Nguyễn Văn Thử</h3>
             <div class="stars">
@@ -124,7 +111,7 @@
 
         <div class="box">
             <img src="${pageContext.request.contextPath}/assets/images/quote-img.png" alt="" class="quote">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi nulla sit libero nemo fuga sequi nobis? Necessitatibus aut laborum, nisi quas eaque laudantium consequuntur iste ex aliquam minus vel? Nemo.</p>
+            <p>Thật sự rất hài lòng khi mua những cuốn sách tại đây!</p>
             <img src="${pageContext.request.contextPath}/assets/images/pic-3.png" class="user" alt="">
             <h3>Nguyễn Quốc Luật</h3>
             <div class="stars">
@@ -175,55 +162,6 @@
 
 <!-- contact section ends -->
 
-<!-- blogs section starts  -->
-
-<section class="blogs" id="blogs">
-
-    <h1 class="heading"> our <span>blogs</span> </h1>
-
-    <div class="box-container">
-
-        <div class="box">
-            <div class="image">
-                <img src="${pageContext.request.contextPath}/assets/images/blog-1.jpeg" alt="">
-            </div>
-            <div class="content">
-                <a href="#" class="title">tasty and refreshing coffee</a>
-                <span>by admin / 21st may, 2021</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, dicta.</p>
-                <a href="#" class="btn">read more</a>
-            </div>
-        </div>
-
-        <div class="box">
-            <div class="image">
-                <img src="${pageContext.request.contextPath}/assets/images/blog-2.jpeg" alt="">
-            </div>
-            <div class="content">
-                <a href="#" class="title">tasty and refreshing coffee</a>
-                <span>by admin / 21st may, 2021</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, dicta.</p>
-                <a href="#" class="btn">read more</a>
-            </div>
-        </div>
-
-        <div class="box">
-            <div class="image">
-                <img src="${pageContext.request.contextPath}/assets/images/blog-3.jpeg" alt="">
-            </div>
-            <div class="content">
-                <a href="#" class="title">tasty and refreshing coffee</a>
-                <span>by admin / 21st may, 2021</span>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, dicta.</p>
-                <a href="#" class="btn">read more</a>
-            </div>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- blogs section ends -->
 
 <!-- footer section starts  -->
 
@@ -235,14 +173,16 @@
         countItem();
     })
     const getListBook = () => {
+        $('#listBook').children().remove()
         $.ajax({
             url: '/eCommerce/admin/getListBook',
+            data:{name: $('#searchbook').val()},
             type: 'GET',
             success: (res) => {
                 if (res.data.length > 0) {
                     let count = 0;
                     res.data.forEach((element) => {
-                        let rawHtml = "<div class='box'><img src='" + element.path + "' alt=''><h3>" + element.title + "</h3>"+element.summary+"<div class='price'>" + covertMoney(element.price) + "</div><a href='javascript:void(0)' class='btn' onclick='addToCart(" + JSON.stringify(element) + ")'>Thêm vào giỏ hàng</a></div>";
+                        let rawHtml = "<div class='box'><img src='" + element.path + "' alt=''><h3>" + element.title + "</h3>"+element.summary+"<div class='price'>" + covertMoney(element.price) + "</div><a href='javascript:void(0)' class='btn btn-success' onclick='addToCart(" + JSON.stringify(element) + ")'>Thêm vào giỏ hàng</a></div>";
                         $('#listBook').append(rawHtml)
                     })
                 }

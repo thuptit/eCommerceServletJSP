@@ -16,7 +16,8 @@ import org.hibernate.Transaction;
  *
  * @author thunv
  */
-public class CustomerDao {
+public class CustomerDao implements ICustomerDao{
+    @Override
     public List<Account> checkLogin(String username, String password){
         Transaction transaction = null;
         List result = null;
@@ -42,6 +43,7 @@ public class CustomerDao {
         return result;
     }
     
+    @Override
     public Customer getCustomerById(int Id){
         Transaction transaction = null;
         Customer cus = new Customer();

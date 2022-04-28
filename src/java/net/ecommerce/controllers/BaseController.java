@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +36,9 @@ import dto.RequestOrderDto;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import net.ecommerce.daos.AuthorDao;
 import net.ecommerce.daos.OrderDao;
+import net.ecommerce.daos.PublisherDao;
 import net.ecommerce.models.Book;
 import net.ecommerce.models.BookItem;
 import net.ecommerce.models.Cart;
@@ -50,11 +50,12 @@ import net.ecommerce.models.Publisher;
  * @author thunv
  */
 public class BaseController extends HttpServlet {
-
     private BookDao bookDao;
     private CustomerDao customerDao;
     private Gson gson;
     private OrderDao orderDao;
+    private AuthorDao authorDao;
+    private PublisherDao publisherDao;
 
     @Override
     public void init() {
@@ -62,6 +63,8 @@ public class BaseController extends HttpServlet {
         customerDao = new CustomerDao();
         gson = new Gson();
         orderDao = new OrderDao();
+        authorDao = new AuthorDao();
+        publisherDao = new PublisherDao();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -182,6 +185,12 @@ public class BaseController extends HttpServlet {
                 case "/cart":
                     cartView(request, response);
                     break;
+                case "/history-order":
+                    orderView(request, response);
+                    break;
+                case "/getOrder":
+                    getListOrder(request, response);
+                    break;
                 default:
                     home(request, response);
                     break;
@@ -286,8 +295,12 @@ public class BaseController extends HttpServlet {
     private void cartView(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         request.getRequestDispatcher("views/cart.jsp").forward(request, response);
     }
+    private void orderView(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        request.getRequestDispatcher("views/orderDetail.jsp").forward(request, response);
+    }
     // end views customer page
-
+    
+    //start handle customer page
     private void order(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String ids = request.getParameter("ids");
         int amount = Integer.parseInt(request.getParameter("amount"));
@@ -304,9 +317,16 @@ public class BaseController extends HttpServlet {
         String number = request.getParameter("numberAccount");
         RequestOrderDto rqOrder = new RequestOrderDto(ids, amount, status, totalPrice, address, typeShip, typePayment, customerId, bankid, bankName, expDate, typeCard, number);
         orderDao.order(rqOrder);
+        ResponseDto res = new ResponseDto(true, "Successed", null);
+        responseClient(res, response);
     }
-
-    //start handle customer page
+    
+    private void getListOrder(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
+        int customerId = Integer.parseInt(request.getParameter("id"));
+        List orders = orderDao.getListOrder(customerId);
+        ResponseDto res = new ResponseDto(true, "Successed", orders);
+        responseClient(res, response);
+    }
     //end handle customer page
     // start views admin page
     private void loginAdmin(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -365,7 +385,7 @@ public class BaseController extends HttpServlet {
 
     private void getListAuthors(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
         String name = request.getParameter("name");
-        List listAuhor = bookDao.getListAuthors(name);
+        List listAuhor = authorDao.getListAuthors(name);
         ResponseDto res = new ResponseDto(true, "Thành công", listAuhor);
         responseClient(res, response);
     }
@@ -374,7 +394,7 @@ public class BaseController extends HttpServlet {
         String name = request.getParameter("name");
         String biography = request.getParameter("biography");
         int id = Integer.parseInt(request.getParameter("id"));
-        boolean isCheckSave = bookDao.saveAuthor(new Author(id, name, biography));
+        boolean isCheckSave = authorDao.saveAuthor(new Author(id, name, biography));
         ResponseDto res = null;
         if (isCheckSave) {
             res = new ResponseDto(isCheckSave, "Cập nhật thành công", null);
@@ -386,7 +406,7 @@ public class BaseController extends HttpServlet {
 
     private void getByIdAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
         int id = Integer.parseInt(request.getParameter("id"));
-        List author = bookDao.getByIdAuthor(id);
+        List author = authorDao.getByIdAuthor(id);
         ResponseDto res = new ResponseDto(true, "Thành công", author);
         responseClient(res, response);
     }
@@ -395,14 +415,14 @@ public class BaseController extends HttpServlet {
         String name = request.getParameter("name");
         String biography = request.getParameter("biography");
         int id = Integer.parseInt(request.getParameter("id"));
-        boolean isCheckDelete = bookDao.deleteAuthor(new Author(id, name, biography));
+        boolean isCheckDelete = authorDao.deleteAuthor(new Author(id, name, biography));
         ResponseDto res = new ResponseDto(true, "Success", null);
         responseClient(res, response);
     }
 
     private void getListPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
         String name = request.getParameter("name");
-        List listAuhor = bookDao.getListPublisher(name);
+        List listAuhor = publisherDao.getListPublishers(name);
         ResponseDto res = new ResponseDto(true, "Thành công", listAuhor);
         responseClient(res, response);
     }
@@ -411,7 +431,7 @@ public class BaseController extends HttpServlet {
         String name = request.getParameter("name");
         String address = request.getParameter("address");
         int id = Integer.parseInt(request.getParameter("id"));
-        boolean isCheckSave = bookDao.savePublisher(new Publisher(id, name, address));
+        boolean isCheckSave = publisherDao.savePublisher(new Publisher(id, name, address));
         ResponseDto res = null;
         if (isCheckSave) {
             res = new ResponseDto(isCheckSave, "Cập nhật thành công", null);
@@ -423,7 +443,7 @@ public class BaseController extends HttpServlet {
 
     private void getByIdPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
         int id = Integer.parseInt(request.getParameter("id"));
-        List author = bookDao.getByIdPublisher(id);
+        List author = publisherDao.getByIdPublisher(id);
         ResponseDto res = new ResponseDto(true, "Thành công", author);
         responseClient(res, response);
     }
@@ -432,19 +452,19 @@ public class BaseController extends HttpServlet {
         String name = request.getParameter("name");
         String address = request.getParameter("biography");
         int id = Integer.parseInt(request.getParameter("id"));
-        boolean isCheckDelete = bookDao.deletePublisher(new Publisher(id, name, address));
+        boolean isCheckDelete = publisherDao.deletePublisher(new Publisher(id, name, address));
         ResponseDto res = new ResponseDto(true, "Success", null);
         responseClient(res, response);
     }
 
     private void getDropdownPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
-        List publishers = bookDao.getDropdownPublisher();
+        List publishers = publisherDao.getDropdownPublisher();
         ResponseDto res = new ResponseDto(true, "Thành công", publishers);
         responseClient(res, response);
     }
 
     private void getDropdownAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
-        List authors = bookDao.getDropdownAuthor();
+        List authors = authorDao.getDropdownAuthor();
         ResponseDto res = new ResponseDto(true, "Thành công", authors);
         responseClient(res, response);
     }
@@ -473,7 +493,8 @@ public class BaseController extends HttpServlet {
     }
 
     private void getListBook(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, JSONException {
-        List books = bookDao.getListBook();
+        String name = request.getParameter("name");
+        List books = bookDao.getListBook(name);
         ResponseDto res = new ResponseDto(true, "Successed", books);
         responseClient(res, response);
     }
